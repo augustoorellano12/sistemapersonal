@@ -275,6 +275,44 @@ body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-ser
 .imp-label-1 { color: var(--text3); } .imp-label-2 { color: var(--blue); }
 .imp-label-3 { color: var(--amber); } .imp-label-4 { color: var(--red); }
 .linea-agencia { --card-color: #2563a8; } .linea-freelance { --card-color: #2a6b3c; } .linea-bajolasuela { --card-color: #9d3d6e; }
+
+/* ESTRATEGIA */
+.estrategia-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 16px 20px;
+  box-shadow: var(--shadow);
+  transition: all 0.15s;
+  position: relative;
+  overflow: hidden;
+}
+.estrategia-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  background: var(--est-color, var(--pink));
+}
+.estrategia-card:hover { box-shadow: var(--shadow-md); border-color: var(--border2); }
+.estrategia-card.resuelta { opacity: 0.45; }
+.est-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 12px; margin-bottom: 8px; }
+.est-titulo { font-size: 14px; font-weight: 500; color: var(--text); line-height: 1.4; }
+.estrategia-card.resuelta .est-titulo { text-decoration: line-through; color: var(--text3); }
+.est-tags { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; margin-bottom: 6px; }
+.est-desc { font-size: 12px; color: var(--text2); line-height: 1.5; margin-top: 6px; }
+.est-actions { display: flex; gap: 6px; margin-top: 10px; padding-top: 10px; border-top: 1px solid var(--border); }
+
+.badge-estrategia-reunion { background: var(--blue-light); color: var(--blue); }
+.badge-estrategia-propuesta { background: var(--amber-light); color: var(--amber); }
+.badge-estrategia-decision { background: var(--pink-light); color: var(--pink); }
+.badge-estrategia-seguimiento { background: var(--teal-light); color: var(--teal); }
+.badge-estrategia-otro { background: var(--bg3); color: var(--text3); }
+
+.est-check { width: 18px; height: 18px; border-radius: 4px; border: 1.5px solid var(--border2); cursor: pointer; flex-shrink: 0; display: flex; align-items: center; justify-content: center; transition: all 0.12s; background: transparent; }
+.est-check:hover { border-color: var(--pink); }
+.est-check.checked { background: var(--pink); border-color: var(--pink); }
+.est-check.checked::after { content: '✓'; font-size: 10px; color: white; font-weight: 600; }
 </style>
 </head>
 <body>
@@ -299,9 +337,9 @@ body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-ser
       <div class="sidebar-section">
         <div class="sidebar-section-label">Vistas</div>
         <button class="nav-item active" onclick="navigate('dashboard',null,this)"><span class="nav-dot" style="background:var(--teal)"></span> Dashboard</button>
+        <button class="nav-item" onclick="navigate('estrategia',null,this)"><span class="nav-dot" style="background:var(--pink)"></span> Estrategia</button>
         <button class="nav-item" onclick="navigate('trabajos',null,this)"><span class="nav-dot" style="background:var(--accent)"></span> Trabajos</button>
         <button class="nav-item" onclick="navigate('semana',null,this)"><span class="nav-dot" style="background:var(--blue)"></span> Esta semana</button>
-        <button class="nav-item" onclick="navigate('foco',null,this)"><span class="nav-dot" style="background:var(--amber)"></span> Foco semanal</button>
       </div>
       <div class="sidebar-section">
         <div class="sidebar-section-label">Líneas</div>
@@ -405,6 +443,47 @@ body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-ser
   </div>
 </div>
 
+<!-- MODAL ESTRATEGIA -->
+<div class="modal-overlay" id="modal-estrategia">
+  <div class="modal">
+    <div class="modal-title" id="modal-estrategia-title">Nueva acción estratégica</div>
+    <div class="form-group"><label class="form-label">Título</label><input class="form-input" id="e-titulo" placeholder="Ej: Reunión con nuevo cliente potencial"></div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Tipo</label>
+        <select class="form-select" id="e-tipo">
+          <option value="reunion">Reunión</option>
+          <option value="propuesta">Propuesta / Cierre</option>
+          <option value="decision">Decisión</option>
+          <option value="seguimiento">Seguimiento</option>
+          <option value="otro">Otro</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Fecha (si aplica)</label><input class="form-input" id="e-fecha" type="date"></div>
+    </div>
+    <div class="form-row">
+      <div class="form-group"><label class="form-label">Prioridad</label>
+        <select class="form-select" id="e-prioridad">
+          <option value="normal">Normal</option>
+          <option value="alta">Alta</option>
+          <option value="urgente">Urgente</option>
+        </select>
+      </div>
+      <div class="form-group"><label class="form-label">Proyecto (opcional)</label>
+        <select class="form-select" id="e-proyecto">
+          <option value="">— General, sin proyecto —</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group"><label class="form-label">Descripción / contexto</label><textarea class="form-textarea" id="e-descripcion" placeholder="Detalles, contexto, qué se necesita definir..."></textarea></div>
+    <div class="form-group"><label class="form-label">Resultado esperado</label><input class="form-input" id="e-resultado" placeholder="Ej: Propuesta enviada, precio definido, acuerdo cerrado..."></div>
+    <div class="form-actions">
+      <button class="btn btn-ghost" onclick="closeModal('modal-estrategia')">Cancelar</button>
+      <button class="btn btn-danger btn-sm" id="btn-delete-estrategia" style="display:none;" onclick="deleteEstrategiaFromModal()">Eliminar</button>
+      <button class="btn btn-primary" onclick="saveEstrategia()">Guardar</button>
+    </div>
+  </div>
+</div>
+
 <!-- MODAL CAMBIAR CONTRASEÑA -->
 <div class="modal-overlay" id="modal-password">
   <div class="modal">
@@ -439,6 +518,7 @@ const db = getFirestore(app);
 let currentUser = null;
 let unsubProyectos = null;
 let unsubTrabajos = null;
+let unsubEstrategias = null;
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 const LINEA_COLORS = { agencia:'#2563a8', freelance:'#2a6b3c', bajolasuela:'#9d3d6e' };
@@ -461,8 +541,8 @@ const DEFAULT_PROYECTOS = [
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const state = {
-  proyectos: [], trabajos: [],
-  editingProyectoId: null, editingTrabajoId: null,
+  proyectos: [], trabajos: [], estrategias: [],
+  editingProyectoId: null, editingTrabajoId: null, editingEstrategiaId: null,
   currentView: 'dashboard', currentLinea: null,
   filtroEstado: 'todos', filtroCliente: '',
   tempSubclientes: [], tempChecklist: [], tempLinks: [],
@@ -540,6 +620,7 @@ function userDoc(uid,col,id) { return doc(db,'users',uid,col,id); }
 function subscribeData(uid) {
   if (unsubProyectos) unsubProyectos();
   if (unsubTrabajos) unsubTrabajos();
+  if (unsubEstrategias) unsubEstrategias();
   unsubProyectos = onSnapshot(userCol(uid,'proyectos'), snap => {
     if (snap.empty && !state.initialized) {
       DEFAULT_PROYECTOS.forEach(p => setDoc(userDoc(uid,'proyectos',p.id),p));
@@ -555,12 +636,18 @@ function subscribeData(uid) {
     state.trabajos.forEach(t=>{ if(!t.importancia) t.importancia=2; if(!t.checklist) t.checklist=[]; if(!t.links) t.links=[]; });
     renderMain(); updateSidebar();
   });
+  unsubEstrategias = onSnapshot(userCol(uid,'estrategias'), snap => {
+    state.estrategias=snap.docs.map(d=>d.data());
+    renderMain(); updateSidebar();
+  });
 }
 
 async function saveP(p) { if(!currentUser) return; await setDoc(userDoc(currentUser.uid,'proyectos',p.id),p); }
 async function deleteP(id) { if(!currentUser) return; await deleteDoc(userDoc(currentUser.uid,'proyectos',id)); }
 async function saveT(t) { if(!currentUser) return; await setDoc(userDoc(currentUser.uid,'trabajos',t.id),t); }
 async function deleteT(id) { if(!currentUser) return; await deleteDoc(userDoc(currentUser.uid,'trabajos',id)); }
+async function saveE(e) { if(!currentUser) return; await setDoc(userDoc(currentUser.uid,'estrategias',e.id),e); }
+async function deleteE(id) { if(!currentUser) return; await deleteDoc(userDoc(currentUser.uid,'estrategias',id)); }
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function fmt(n) { if(!n||n===0) return '$0'; return '$'+Number(n).toLocaleString('es-AR'); }
@@ -632,8 +719,8 @@ function renderMain() {
   if(state.currentView==='dashboard') main.innerHTML=renderDashboard();
   else if(state.currentView==='linea') main.innerHTML=renderLinea(state.currentLinea);
   else if(state.currentView==='trabajos') main.innerHTML=renderTrabajos();
+  else if(state.currentView==='estrategia') main.innerHTML=renderEstrategia();
   else if(state.currentView==='semana') main.innerHTML=renderSemana();
-  else if(state.currentView==='foco') main.innerHTML=renderFoco();
   else if(state.currentView==='proyecto') main.innerHTML=renderProyectoDetail(state.currentLinea);
 }
 
@@ -647,6 +734,8 @@ function renderDashboard() {
   const pend=state.trabajos.filter(t=>t.estado!=='entregado').length;
   const urg=state.trabajos.filter(t=>t.estado!=='entregado'&&t.importancia===4).length;
   const venc=state.trabajos.filter(t=>t.estado!=='entregado'&&t.fecha&&new Date(t.fecha+'T00:00:00')<new Date()).length;
+  const estPend=state.estrategias.filter(e=>!e.resuelta).length;
+  const estUrg=state.estrategias.filter(e=>!e.resuelta&&e.prioridad==='urgente').length;
 
   let html=`
   <div class="page-header">
@@ -662,7 +751,8 @@ function renderDashboard() {
     <div class="stat-card"><div class="stat-label">FREELANCE</div><div class="stat-value">${fmt(fr)}</div><div class="stat-sub">fijo + variable</div></div>
     <div class="stat-card"><div class="stat-label">BAJO LA SUELA</div><div class="stat-value">${fmt(bl)}</div><div class="stat-sub">tu parte (1/3)</div></div>
     <div class="stat-card${urg>0?' stat-accent':''}"><div class="stat-label">URGENTES</div><div class="stat-value">${urg}</div><div class="stat-sub">${venc>0?venc+' vencidos':'al día'}</div></div>
-    <div class="stat-card"><div class="stat-label">PENDIENTES</div><div class="stat-value">${pend}</div><div class="stat-sub">de ${state.trabajos.length} totales</div></div>
+    <div class="stat-card"><div class="stat-label">TRABAJOS</div><div class="stat-value">${pend}</div><div class="stat-sub">operativos pendientes</div></div>
+    <div class="stat-card${estUrg>0?' stat-accent':''}"><div class="stat-label">ESTRATEGIA</div><div class="stat-value">${estPend}</div><div class="stat-sub">${estUrg>0?estUrg+' urgentes':'pendientes'}</div></div>
   </div>`;
 
   ['agencia','freelance','bajolasuela'].forEach(linea=>{
@@ -877,27 +967,121 @@ function renderSemana() {
   return html;
 }
 
-// ─── FOCO ────────────────────────────────────────────────────────────────────
-function renderFoco() {
-  const sorted=[...state.proyectos].sort((a,b)=>focoScore(b)-focoScore(a));
-  const max=focoScore(sorted[0])||1;
-  const urgentes=sortTrabajos(state.trabajos.filter(t=>t.estado!=='entregado'&&t.importancia===4));
-  const altos=sortTrabajos(state.trabajos.filter(t=>t.estado!=='entregado'&&t.importancia===3));
+// ─── ESTRATEGIA ──────────────────────────────────────────────────────────────
+function renderEstrategia() {
+  const TIPO_LABELS = { reunion:'Reunión', propuesta:'Propuesta', decision:'Decisión', seguimiento:'Seguimiento', otro:'Otro' };
+  const PRIORIDAD_COLORS = { normal:'var(--text3)', alta:'var(--amber)', urgente:'var(--red)' };
+  const TIPO_BADGE = { reunion:'badge-estrategia-reunion', propuesta:'badge-estrategia-propuesta', decision:'badge-estrategia-decision', seguimiento:'badge-estrategia-seguimiento', otro:'badge-estrategia-otro' };
+
+  const pendientes = state.estrategias.filter(e=>!e.resuelta).sort((a,b)=>{
+    const orden = { urgente:0, alta:1, normal:2 };
+    if((orden[a.prioridad]||2)!==(orden[b.prioridad]||2)) return (orden[a.prioridad]||2)-(orden[b.prioridad]||2);
+    return (a.fecha||'9999').localeCompare(b.fecha||'9999');
+  });
+  const resueltas = state.estrategias.filter(e=>e.resuelta);
+
+  const renderCard = (e) => {
+    const p = e.proyectoId ? state.proyectos.find(x=>x.id===e.proyectoId) : null;
+    const venc = getVencimientoInfo(e.fecha);
+    const color = p ? LINEA_COLORS[p.linea] : 'var(--pink)';
+    return `
+    <div class="estrategia-card${e.resuelta?' resuelta':''}" style="--est-color:${color}">
+      <div class="est-header">
+        <div class="est-titulo">${e.titulo}</div>
+        <div class="est-check${e.resuelta?' checked':''}" onclick="toggleEstrategia('${e.id}')"></div>
+      </div>
+      <div class="est-tags">
+        <span class="badge ${TIPO_BADGE[e.tipo]||'badge-estrategia-otro'}">${TIPO_LABELS[e.tipo]||'Otro'}</span>
+        ${e.prioridad&&e.prioridad!=='normal'?`<span style="font-size:11px;color:${PRIORIDAD_COLORS[e.prioridad]};font-family:'DM Mono',monospace;font-weight:500;">${e.prioridad==='urgente'?'URGENTE':'ALTA'}</span>`:''}
+        ${venc&&!e.resuelta?`<span class="badge ${venc.badge}">${venc.texto}</span>`:''}
+        ${p?`<span class="tag" style="background:${color}12;color:${color};border:1px solid ${color}25;">${p.nombre}</span>`:''}
+      </div>
+      ${e.descripcion?`<div class="est-desc">${e.descripcion}</div>`:''}
+      ${e.resultado?`<div style="font-size:12px;color:var(--accent);font-family:'DM Mono',monospace;margin-top:6px;">→ ${e.resultado}</div>`:''}
+      <div class="est-actions">
+        <button class="btn btn-ghost btn-sm" onclick="openModalEstrategia('${e.id}')">Editar</button>
+      </div>
+    </div>`;
+  };
 
   return `
-  <div class="page-header"><div><div class="page-title">Foco semanal</div><div class="page-sub">Proyectos por prioridad · urgentes primero</div></div></div>
-  ${urgentes.length>0?`<div class="urgente-banner"><div class="urgente-banner-label">URGENTES</div><div class="trabajos-list">${urgentes.map(t=>renderTrabajoCard(t,true)).join('')}</div></div>`:''}
-  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 22px;margin-bottom:16px;box-shadow:var(--shadow);">
-    <div style="font-size:10px;color:var(--text3);font-family:'DM Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;">PROYECTOS POR PRIORIDAD</div>
-    ${sorted.map((p,i)=>`
-    <div class="foco-item" style="${i===sorted.length-1?'border-bottom:none':''}">
-      <div class="foco-rank">${i+1}</div>
-      <div class="foco-info"><div class="foco-nombre">${p.nombre}</div><div class="foco-meta">${LINEA_LABELS[p.linea]} · ${estadoLabel(p.estado)}</div></div>
-      <div class="foco-bar-wrap"><div class="foco-bar-track"><div class="foco-bar-fill" style="width:${Math.round((focoScore(p)/max)*100)}%;background:${LINEA_COLORS[p.linea]};"></div></div></div>
-      <div class="foco-ingreso">${p.ingresoPersonal>0?fmt(p.ingresoPersonal):p.ingresoLabel||'—'}</div>
-    </div>`).join('')}
+  <div class="page-header">
+    <div><div class="page-title">Estrategia</div><div class="page-sub">Decisiones, reuniones y acciones de negocio · ${pendientes.length} pendientes</div></div>
+    <button class="btn btn-primary" onclick="openModalEstrategia()">+ Nueva acción</button>
   </div>
-  ${altos.length>0?`<div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 22px;box-shadow:var(--shadow);"><div style="font-size:10px;color:var(--amber);font-family:'DM Mono',monospace;letter-spacing:0.08em;text-transform:uppercase;margin-bottom:10px;">IMPORTANCIA ALTA</div><div class="trabajos-list">${altos.map(t=>renderTrabajoCard(t,true)).join('')}</div></div>`:''}`;
+  ${pendientes.filter(e=>e.prioridad==='urgente').length>0?`
+  <div class="urgente-banner">
+    <div class="urgente-banner-label">URGENTES</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">${pendientes.filter(e=>e.prioridad==='urgente').map(e=>renderCard(e)).join('')}</div>
+  </div>`:''}
+  ${pendientes.length===0?`<div class="empty-state"><div class="empty-icon">◎</div><div class="empty-title">Sin acciones estratégicas</div><div class="empty-sub">Agregá reuniones, decisiones y propuestas de negocio</div></div>`:''}
+  ${pendientes.filter(e=>e.prioridad!=='urgente').length>0?`<div style="display:flex;flex-direction:column;gap:8px;">${pendientes.filter(e=>e.prioridad!=='urgente').map(e=>renderCard(e)).join('')}</div>`:''}
+  ${resueltas.length>0?`
+  <div class="section-sep" style="margin-top:20px;"><span class="section-sep-label">RESUELTAS (${resueltas.length})</span><div class="section-sep-line"></div></div>
+  <div style="display:flex;flex-direction:column;gap:8px;">${resueltas.map(e=>renderCard(e)).join('')}</div>`:''}`;
+}
+
+window.toggleEstrategia = async function(id) {
+  const e = state.estrategias.find(x=>x.id===id);
+  if(e) { e.resuelta=!e.resuelta; await saveE(e); }
+}
+
+window.openModalEstrategia = function(editId) {
+  state.editingEstrategiaId = editId||null;
+  document.getElementById('modal-estrategia-title').textContent = editId ? 'Editar acción estratégica' : 'Nueva acción estratégica';
+  document.getElementById('btn-delete-estrategia').style.display = editId ? 'block' : 'none';
+
+  // Populate proyecto select
+  const sel = document.getElementById('e-proyecto');
+  sel.innerHTML = '<option value="">— General, sin proyecto —</option>' +
+    state.proyectos.map(p=>`<option value="${p.id}">${p.nombre}</option>`).join('');
+
+  if(editId) {
+    const e = state.estrategias.find(x=>x.id===editId);
+    if(e) {
+      document.getElementById('e-titulo').value=e.titulo;
+      document.getElementById('e-tipo').value=e.tipo||'reunion';
+      document.getElementById('e-fecha').value=e.fecha||'';
+      document.getElementById('e-prioridad').value=e.prioridad||'normal';
+      document.getElementById('e-proyecto').value=e.proyectoId||'';
+      document.getElementById('e-descripcion').value=e.descripcion||'';
+      document.getElementById('e-resultado').value=e.resultado||'';
+    }
+  } else {
+    ['e-titulo','e-fecha','e-descripcion','e-resultado'].forEach(id=>document.getElementById(id).value='');
+    document.getElementById('e-tipo').value='reunion';
+    document.getElementById('e-prioridad').value='normal';
+    document.getElementById('e-proyecto').value='';
+  }
+  openModal('modal-estrategia');
+}
+
+window.deleteEstrategiaFromModal = async function() {
+  if(!state.editingEstrategiaId) return;
+  if(!confirm('¿Eliminar esta acción estratégica?')) return;
+  await deleteE(state.editingEstrategiaId);
+  closeModal('modal-estrategia'); toast('Acción eliminada');
+}
+
+window.saveEstrategia = async function() {
+  const titulo = document.getElementById('e-titulo').value.trim();
+  if(!titulo) { alert('El título es obligatorio'); return; }
+  const data = {
+    titulo,
+    tipo: document.getElementById('e-tipo').value,
+    fecha: document.getElementById('e-fecha').value,
+    prioridad: document.getElementById('e-prioridad').value,
+    proyectoId: document.getElementById('e-proyecto').value||'',
+    descripcion: document.getElementById('e-descripcion').value,
+    resultado: document.getElementById('e-resultado').value,
+  };
+  if(state.editingEstrategiaId) {
+    const e = state.estrategias.find(x=>x.id===state.editingEstrategiaId);
+    await saveE({...e,...data}); toast('Acción actualizada');
+  } else {
+    await saveE({id:uid(), resuelta:false, creado:new Date().toISOString(),...data}); toast('Acción agregada');
+  }
+  closeModal('modal-estrategia');
 }
 
 // ─── MODAL PROYECTO ──────────────────────────────────────────────────────────
