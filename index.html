@@ -313,6 +313,50 @@ body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-ser
 .est-check:hover { border-color: var(--pink); }
 .est-check.checked { background: var(--pink); border-color: var(--pink); }
 .est-check.checked::after { content: '✓'; font-size: 10px; color: white; font-weight: 600; }
+
+/* INGRESOS */
+.ing-mes-selector { display: flex; align-items: center; gap: 10px; margin-bottom: 24px; }
+.ing-mes-btn { background: none; border: 1px solid var(--border2); border-radius: var(--radius); padding: 6px 12px; cursor: pointer; color: var(--text2); font-family: 'DM Mono', monospace; font-size: 12px; transition: all 0.12s; }
+.ing-mes-btn:hover { background: var(--bg3); color: var(--text); }
+.ing-mes-label { font-family: 'Fraunces', serif; font-size: 20px; color: var(--text); font-weight: 400; letter-spacing: -0.01em; min-width: 160px; text-align: center; }
+
+.ing-total-card { background: var(--accent-light); border: 1px solid var(--accent-mid); border-radius: var(--radius-lg); padding: 20px 24px; margin-bottom: 20px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.ing-total-main { }
+.ing-total-label { font-size: 11px; color: var(--accent); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 4px; }
+.ing-total-valor { font-family: 'Fraunces', serif; font-size: 40px; color: var(--accent); font-weight: 400; letter-spacing: -0.02em; line-height: 1; }
+.ing-total-vs { font-size: 13px; color: var(--text2); margin-top: 6px; }
+.ing-vs-pos { color: var(--accent); font-weight: 500; }
+.ing-vs-neg { color: var(--red); font-weight: 500; }
+
+.ing-lineas { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; margin-bottom: 20px; }
+.ing-linea-card { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 14px 16px; box-shadow: var(--shadow); }
+.ing-linea-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 6px; }
+.ing-linea-valor { font-family: 'Fraunces', serif; font-size: 22px; color: var(--text); font-weight: 400; letter-spacing: -0.02em; }
+.ing-linea-sub { font-size: 11px; color: var(--text3); margin-top: 3px; }
+
+.ing-tabla { width: 100%; border-collapse: collapse; }
+.ing-tabla th { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; padding: 8px 12px; text-align: left; border-bottom: 1px solid var(--border); }
+.ing-tabla td { padding: 10px 12px; border-bottom: 1px solid var(--border); font-size: 13px; color: var(--text); }
+.ing-tabla tr:last-child td { border-bottom: none; }
+.ing-tabla tr:hover td { background: var(--bg3); }
+.ing-tabla .td-monto { font-family: 'DM Mono', monospace; font-weight: 500; text-align: right; }
+.ing-tabla .td-tipo { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+.ing-tabla .td-editable { cursor: pointer; }
+.ing-tabla .td-editable:hover { color: var(--accent); }
+.ing-edit-input { background: var(--bg3); border: 1px solid var(--accent); border-radius: 5px; padding: 3px 8px; font-size: 13px; font-family: 'DM Mono', monospace; color: var(--text); width: 120px; outline: none; }
+
+/* CHART */
+.chart-wrap { background: var(--bg2); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px 24px; box-shadow: var(--shadow); margin-bottom: 20px; }
+.chart-title { font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 16px; }
+.chart-bars { display: flex; align-items: flex-end; gap: 8px; height: 140px; }
+.chart-col { display: flex; flex-direction: column; align-items: center; gap: 4px; flex: 1; }
+.chart-bar-wrap { flex: 1; display: flex; align-items: flex-end; width: 100%; }
+.chart-bar { width: 100%; border-radius: 4px 4px 0 0; min-height: 3px; transition: height 0.3s; position: relative; cursor: default; }
+.chart-bar:hover::after { content: attr(data-val); position: absolute; top: -22px; left: 50%; transform: translateX(-50%); background: var(--text); color: var(--bg2); font-size: 10px; padding: 2px 6px; border-radius: 4px; white-space: nowrap; font-family: 'DM Mono', monospace; }
+.chart-mes-label { font-size: 10px; color: var(--text3); font-family: 'DM Mono', monospace; text-align: center; }
+.chart-lineas-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-top: 12px; }
+.chart-legend-item { display: flex; align-items: center; gap: 5px; font-size: 11px; color: var(--text3); font-family: 'DM Mono', monospace; }
+.chart-legend-dot { width: 8px; height: 8px; border-radius: 2px; flex-shrink: 0; }
 </style>
 </head>
 <body>
@@ -337,6 +381,7 @@ body { background: var(--bg); color: var(--text); font-family: 'Geist', sans-ser
       <div class="sidebar-section">
         <div class="sidebar-section-label">Vistas</div>
         <button class="nav-item active" onclick="navigate('dashboard',null,this)"><span class="nav-dot" style="background:var(--teal)"></span> Dashboard</button>
+        <button class="nav-item" onclick="navigate('ingresos',null,this)"><span class="nav-dot" style="background:var(--amber)"></span> Ingresos</button>
         <button class="nav-item" onclick="navigate('estrategia',null,this)"><span class="nav-dot" style="background:var(--pink)"></span> Estrategia</button>
         <button class="nav-item" onclick="navigate('trabajos',null,this)"><span class="nav-dot" style="background:var(--accent)"></span> Trabajos</button>
         <button class="nav-item" onclick="navigate('semana',null,this)"><span class="nav-dot" style="background:var(--blue)"></span> Esta semana</button>
@@ -519,6 +564,7 @@ let currentUser = null;
 let unsubProyectos = null;
 let unsubTrabajos = null;
 let unsubEstrategias = null;
+let unsubIngresos = null;
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 const LINEA_COLORS = { agencia:'#2563a8', freelance:'#2a6b3c', bajolasuela:'#9d3d6e' };
@@ -541,11 +587,12 @@ const DEFAULT_PROYECTOS = [
 
 // ─── STATE ───────────────────────────────────────────────────────────────────
 const state = {
-  proyectos: [], trabajos: [], estrategias: [],
+  proyectos: [], trabajos: [], estrategias: [], ingresos: {},
   editingProyectoId: null, editingTrabajoId: null, editingEstrategiaId: null,
   currentView: 'dashboard', currentLinea: null,
   filtroEstado: 'todos', filtroCliente: '',
   tempSubclientes: [], tempChecklist: [], tempLinks: [],
+  mesVistaIngresos: null,
   initialized: false,
 };
 
@@ -621,6 +668,7 @@ function subscribeData(uid) {
   if (unsubProyectos) unsubProyectos();
   if (unsubTrabajos) unsubTrabajos();
   if (unsubEstrategias) unsubEstrategias();
+  if (unsubIngresos) unsubIngresos();
   unsubProyectos = onSnapshot(userCol(uid,'proyectos'), snap => {
     if (snap.empty && !state.initialized) {
       DEFAULT_PROYECTOS.forEach(p => setDoc(userDoc(uid,'proyectos',p.id),p));
@@ -640,6 +688,12 @@ function subscribeData(uid) {
     state.estrategias=snap.docs.map(d=>d.data());
     renderMain(); updateSidebar();
   });
+  // Ingresos: doc por mes "YYYY-MM" con mapa proyectoId->monto
+  unsubIngresos = onSnapshot(userCol(uid,'ingresos'), snap => {
+    state.ingresos={};
+    snap.docs.forEach(d=>{ state.ingresos[d.id]=d.data(); });
+    renderMain(); updateSidebar();
+  });
 }
 
 async function saveP(p) { if(!currentUser) return; await setDoc(userDoc(currentUser.uid,'proyectos',p.id),p); }
@@ -648,6 +702,14 @@ async function saveT(t) { if(!currentUser) return; await setDoc(userDoc(currentU
 async function deleteT(id) { if(!currentUser) return; await deleteDoc(userDoc(currentUser.uid,'trabajos',id)); }
 async function saveE(e) { if(!currentUser) return; await setDoc(userDoc(currentUser.uid,'estrategias',e.id),e); }
 async function deleteE(id) { if(!currentUser) return; await deleteDoc(userDoc(currentUser.uid,'estrategias',id)); }
+
+async function saveIngreso(mes, proyectoId, monto) {
+  if(!currentUser) return;
+  const ref = userDoc(currentUser.uid,'ingresos',mes);
+  const actual = state.ingresos[mes] || {};
+  actual[proyectoId] = monto;
+  await setDoc(ref, actual);
+}
 
 // ─── HELPERS ─────────────────────────────────────────────────────────────────
 function fmt(n) { if(!n||n===0) return '$0'; return '$'+Number(n).toLocaleString('es-AR'); }
@@ -706,10 +768,49 @@ window.navigate = function(view,linea,el) {
   renderMain(); updateSidebar();
 }
 
+function getMesKey(offset) {
+  const d = new Date();
+  d.setMonth(d.getMonth() + (offset||0));
+  return d.toISOString().slice(0,7);
+}
+
+function getMesLabel(key) {
+  const [y,m] = key.split('-');
+  const meses = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre'];
+  return meses[parseInt(m)-1] + ' ' + y;
+}
+
+function getTotalMes(mesKey) {
+  const data = state.ingresos[mesKey] || {};
+  return Object.values(data).reduce((s,v)=>s+(v||0),0);
+}
+
+function calcIngresosMes(mesKey) {
+  // Fijos: tomar ingresoPersonal del proyecto
+  // Variables: sumar montos de trabajos entregados en ese mes
+  const result = {};
+  state.proyectos.forEach(p => {
+    if(p.ingresoTipo === 'fijo' && p.ingresoPersonal > 0) {
+      result[p.id] = (state.ingresos[mesKey]||{})[p.id] ?? p.ingresoPersonal;
+    } else {
+      // Variable: suma de trabajos con monto en ese mes
+      const montoTrabajos = state.trabajos
+        .filter(t => t.proyectoId===p.id && t.monto > 0 && t.fecha && t.fecha.startsWith(mesKey))
+        .reduce((s,t)=>s+(t.monto||0),0);
+      // Si hay registro manual en ingresos, usar ese; si no, usar suma de trabajos
+      const manual = (state.ingresos[mesKey]||{})[p.id];
+      result[p.id] = manual !== undefined ? manual : montoTrabajos;
+    }
+  });
+  return result;
+}
+
 function updateSidebar() {
-  const total=getTotalPersonal();
-  document.getElementById('sidebar-total').textContent=fmt(total);
-  document.getElementById('sidebar-total-sub').textContent=total>0?'ingreso personal real':'sin datos aún';
+  const mesKey = getMesKey(0);
+  const data = calcIngresosMes(mesKey);
+  const total = Object.values(data).reduce((s,v)=>s+(v||0),0);
+  document.getElementById('sidebar-total').textContent = fmt(total);
+  document.getElementById('sidebar-total-sub').textContent = getMesLabel(mesKey);
 }
 
 // ─── RENDER MAIN ─────────────────────────────────────────────────────────────
@@ -718,6 +819,7 @@ function renderMain() {
   if(!main) return;
   if(state.currentView==='dashboard') main.innerHTML=renderDashboard();
   else if(state.currentView==='linea') main.innerHTML=renderLinea(state.currentLinea);
+  else if(state.currentView==='ingresos') main.innerHTML=renderIngresos();
   else if(state.currentView==='trabajos') main.innerHTML=renderTrabajos();
   else if(state.currentView==='estrategia') main.innerHTML=renderEstrategia();
   else if(state.currentView==='semana') main.innerHTML=renderSemana();
@@ -726,10 +828,12 @@ function renderMain() {
 
 // ─── DASHBOARD ───────────────────────────────────────────────────────────────
 function renderDashboard() {
-  const total=getTotalPersonal();
-  const ag=state.proyectos.filter(p=>p.linea==='agencia').reduce((s,p)=>s+(p.ingresoPersonal||0),0);
-  const fr=state.proyectos.filter(p=>p.linea==='freelance').reduce((s,p)=>s+(p.ingresoPersonal||0),0);
-  const bl=state.proyectos.filter(p=>p.linea==='bajolasuela').reduce((s,p)=>s+(p.ingresoPersonal||0),0);
+  const mesKey = getMesKey(0);
+  const dataMes = calcIngresosMes(mesKey);
+  const total = Object.values(dataMes).reduce((s,v)=>s+(v||0),0);
+  const ag = state.proyectos.filter(p=>p.linea==='agencia').reduce((s,p)=>s+(dataMes[p.id]||0),0);
+  const fr = state.proyectos.filter(p=>p.linea==='freelance').reduce((s,p)=>s+(dataMes[p.id]||0),0);
+  const bl = state.proyectos.filter(p=>p.linea==='bajolasuela').reduce((s,p)=>s+(dataMes[p.id]||0),0);
   const activos=state.proyectos.filter(p=>p.estado==='ejecucion'||p.estado==='crecimiento').length;
   const pend=state.trabajos.filter(t=>t.estado!=='entregado').length;
   const urg=state.trabajos.filter(t=>t.estado!=='entregado'&&t.importancia===4).length;
@@ -742,6 +846,7 @@ function renderDashboard() {
     <div><div class="page-title">Dashboard</div><div class="page-sub">${new Date().toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'})}</div></div>
     <div class="page-header-actions">
       <button class="btn btn-ghost btn-sm" onclick="openModal('modal-password')">Mi cuenta</button>
+      <button class="btn btn-ghost btn-sm" onclick="navigate('ingresos',null,document.querySelector('.nav-item:nth-child(2)'))">Ver ingresos</button>
       <button class="btn btn-primary" onclick="openModalProyecto()">+ Nuevo proyecto</button>
     </div>
   </div>
@@ -965,6 +1070,186 @@ function renderSemana() {
   }
 
   return html;
+}
+
+// ─── INGRESOS ────────────────────────────────────────────────────────────────
+function renderIngresos() {
+  if (!state.mesVistaIngresos) state.mesVistaIngresos = getMesKey(0);
+  const mesKey = state.mesVistaIngresos;
+  const mesAnterior = (() => { const [y,m]=mesKey.split('-'); const d=new Date(+y,+m-2,1); return d.toISOString().slice(0,7); })();
+
+  const dataMes = calcIngresosMes(mesKey);
+  const dataAnt = calcIngresosMes(mesAnterior);
+  const totalMes = Object.values(dataMes).reduce((s,v)=>s+(v||0),0);
+  const totalAnt = Object.values(dataAnt).reduce((s,v)=>s+(v||0),0);
+  const diff = totalMes - totalAnt;
+  const diffPct = totalAnt > 0 ? Math.round((diff/totalAnt)*100) : null;
+
+  // Por línea
+  const porLinea = { agencia:0, freelance:0, bajolasuela:0 };
+  state.proyectos.forEach(p => { if(dataMes[p.id]) porLinea[p.linea] = (porLinea[p.linea]||0) + dataMes[p.id]; });
+
+  // Meses disponibles para gráfico (desde mayo 2026 hasta mes actual + 1)
+  const mesesGrafico = [];
+  let cur = '2026-05';
+  const limite = getMesKey(1);
+  while(cur <= limite) {
+    mesesGrafico.push(cur);
+    const [y,m] = cur.split('-');
+    const next = new Date(+y, +m, 1);
+    cur = next.toISOString().slice(0,7);
+  }
+  const maxVal = Math.max(...mesesGrafico.map(mk => {
+    const d = calcIngresosMes(mk);
+    return Object.values(d).reduce((s,v)=>s+(v||0),0);
+  }), 1);
+
+  // Tabla por proyecto
+  const filas = state.proyectos.map(p => {
+    const monto = dataMes[p.id] || 0;
+    const montoAnt = dataAnt[p.id] || 0;
+    const esFijo = p.ingresoTipo === 'fijo';
+    return { p, monto, montoAnt, esFijo };
+  }).filter(f => f.monto > 0 || f.p.ingresoPersonal > 0);
+
+  return `
+  <div class="page-header">
+    <div><div class="page-title">Ingresos</div><div class="page-sub">Registro real · automático desde proyectos y trabajos</div></div>
+  </div>
+
+  <!-- SELECTOR DE MES -->
+  <div class="ing-mes-selector">
+    <button class="ing-mes-btn" onclick="cambiarMes(-1)">← anterior</button>
+    <div class="ing-mes-label">${getMesLabel(mesKey)}</div>
+    <button class="ing-mes-btn" onclick="cambiarMes(1)">siguiente →</button>
+  </div>
+
+  <!-- TOTAL -->
+  <div class="ing-total-card">
+    <div class="ing-total-main">
+      <div class="ing-total-label">INGRESO TOTAL DEL MES</div>
+      <div class="ing-total-valor">${fmt(totalMes)}</div>
+      <div class="ing-total-vs">
+        vs ${getMesLabel(mesAnterior)}: ${fmt(totalAnt)}
+        ${diff !== 0 ? `<span class="${diff>0?'ing-vs-pos':'ing-vs-neg'}">${diff>0?'+':''}${fmt(diff)}${diffPct!==null?' ('+diffPct+'%)':''}</span>` : ''}
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:4px;text-align:right;">
+      <div style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;">PROYECTADO (config)</div>
+      <div style="font-family:'Fraunces',serif;font-size:22px;color:var(--text2);">${fmt(getTotalPersonal())}</div>
+    </div>
+  </div>
+
+  <!-- POR LÍNEA -->
+  <div class="ing-lineas">
+    <div class="ing-linea-card">
+      <div class="ing-linea-label" style="color:var(--blue);">JILLO</div>
+      <div class="ing-linea-valor">${fmt(porLinea.agencia)}</div>
+      <div class="ing-linea-sub">agencia</div>
+    </div>
+    <div class="ing-linea-card">
+      <div class="ing-linea-label" style="color:var(--accent);">FREELANCE</div>
+      <div class="ing-linea-valor">${fmt(porLinea.freelance)}</div>
+      <div class="ing-linea-sub">propio</div>
+    </div>
+    <div class="ing-linea-card">
+      <div class="ing-linea-label" style="color:var(--pink);">BAJO LA SUELA</div>
+      <div class="ing-linea-valor">${fmt(porLinea.bajolasuela)}</div>
+      <div class="ing-linea-sub">tu parte</div>
+    </div>
+  </div>
+
+  <!-- GRÁFICO -->
+  <div class="chart-wrap">
+    <div class="chart-title">Evolución mensual</div>
+    <div class="chart-bars">
+      ${mesesGrafico.map(mk => {
+        const d = calcIngresosMes(mk);
+        const tot = Object.values(d).reduce((s,v)=>s+(v||0),0);
+        const pct = Math.max(Math.round((tot/maxVal)*100), tot>0?2:0);
+        const esActual = mk===mesKey;
+        const esFuturo = mk > getMesKey(0);
+        const color = esActual ? 'var(--accent)' : esFuturo ? 'var(--bg4)' : 'var(--accent-mid)';
+        const label = mk.split('-')[1];
+        return `<div class="chart-col">
+          <div class="chart-bar-wrap"><div class="chart-bar" style="height:${pct}%;background:${color};" data-val="${fmt(tot)}"></div></div>
+          <div class="chart-mes-label" style="${esActual?'color:var(--accent);font-weight:500;':''}">M${label}</div>
+        </div>`;
+      }).join('')}
+    </div>
+  </div>
+
+  <!-- TABLA POR PROYECTO -->
+  <div class="section-sep"><span class="section-sep-label">DETALLE POR PROYECTO</span><div class="section-sep-line"></div><span style="font-size:11px;color:var(--text3);font-family:'DM Mono',monospace;">clic en monto para editar</span></div>
+  <div style="background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden;box-shadow:var(--shadow);">
+    <table class="ing-tabla" style="width:100%;">
+      <thead>
+        <tr>
+          <th>Proyecto</th>
+          <th>Línea</th>
+          <th class="td-tipo">Tipo</th>
+          <th style="text-align:right;">Mes anterior</th>
+          <th style="text-align:right;">Este mes</th>
+          <th style="text-align:right;">Diferencia</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${filas.map(({p,monto,montoAnt,esFijo}) => {
+          const d = monto - montoAnt;
+          return `<tr>
+            <td style="font-weight:500;">${p.nombre}</td>
+            <td><span class="tag" style="background:${LINEA_COLORS[p.linea]}12;color:${LINEA_COLORS[p.linea]};border:1px solid ${LINEA_COLORS[p.linea]}25;">${LINEA_LABELS[p.linea]}</span></td>
+            <td class="td-tipo">${p.ingresoTipo}</td>
+            <td class="td-monto" style="color:var(--text3);">${montoAnt>0?fmt(montoAnt):'—'}</td>
+            <td class="td-monto td-editable" onclick="editarMontoIngreso('${p.id}','${mesKey}',${monto})" title="Clic para editar">
+              <span id="ing-val-${p.id}">${monto>0?fmt(monto):esFijo?fmt(p.ingresoPersonal):'—'}</span>
+            </td>
+            <td class="td-monto" style="color:${d>0?'var(--accent)':d<0?'var(--red)':'var(--text3)'}">
+              ${d!==0?(d>0?'+':'')+fmt(d):'—'}
+            </td>
+          </tr>`;
+        }).join('')}
+        <tr style="background:var(--bg3);">
+          <td colspan="4" style="font-weight:600;">TOTAL</td>
+          <td class="td-monto" style="font-weight:600;color:var(--accent);">${fmt(totalMes)}</td>
+          <td class="td-monto" style="font-weight:600;color:${diff>0?'var(--accent)':diff<0?'var(--red)':'var(--text3)'}">
+            ${diff!==0?(diff>0?'+':'')+fmt(diff):'—'}
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="info-box" style="margin-top:12px;">
+    Los montos <strong>fijos</strong> se toman del valor configurado en cada proyecto. Los <strong>variables</strong> suman automáticamente los trabajos con monto cobrados en el mes. Podés editar cualquier valor haciendo clic en el monto para ajustarlo manualmente.
+  </div>`;
+}
+
+window.cambiarMes = function(dir) {
+  const [y,m] = state.mesVistaIngresos.split('-');
+  const d = new Date(+y, +m-1+dir, 1);
+  const nuevo = d.toISOString().slice(0,7);
+  if(nuevo >= '2026-05') state.mesVistaIngresos = nuevo;
+  renderMain();
+}
+
+window.editarMontoIngreso = function(proyectoId, mesKey, montoActual) {
+  const celda = document.getElementById('ing-val-'+proyectoId);
+  if(!celda) return;
+  const input = document.createElement('input');
+  input.className = 'ing-edit-input';
+  input.type = 'number';
+  input.value = montoActual || '';
+  input.placeholder = '0';
+  celda.parentNode.replaceChild(input, celda);
+  input.focus();
+  input.select();
+  const guardar = async () => {
+    const nuevo = parseFloat(input.value) || 0;
+    await saveIngreso(mesKey, proyectoId, nuevo);
+    toast('Ingreso actualizado');
+  };
+  input.addEventListener('blur', guardar);
+  input.addEventListener('keydown', e => { if(e.key==='Enter') { e.preventDefault(); input.blur(); } if(e.key==='Escape') renderMain(); });
 }
 
 // ─── ESTRATEGIA ──────────────────────────────────────────────────────────────
@@ -1298,6 +1583,25 @@ window.saveTrabajo=async function(){
     await saveT({...t,...data}); toast('Trabajo actualizado');
   } else {
     await saveT({id:uid(),creado:new Date().toISOString(),...data}); toast('Trabajo agregado');
+  }
+  // Auto-actualizar ingresos variables si tiene monto y fecha
+  if(data.monto > 0 && data.fecha) {
+    const mesKey = data.fecha.slice(0,7);
+    const p = state.proyectos.find(x=>x.id===data.proyectoId);
+    if(p && p.ingresoTipo !== 'fijo') {
+      // Recalcular suma de todos los trabajos variables de ese proyecto en ese mes
+      // (esperar a que Firestore actualice el estado, luego recalcular)
+      setTimeout(async () => {
+        const suma = state.trabajos
+          .filter(t => t.proyectoId===data.proyectoId && t.monto > 0 && t.fecha && t.fecha.startsWith(mesKey) && t.id !== state.editingTrabajoId)
+          .reduce((s,t)=>s+(t.monto||0),0) + data.monto;
+        // Solo guardar si no hay override manual
+        const manual = (state.ingresos[mesKey]||{})[data.proyectoId];
+        if(manual === undefined || manual === 0) {
+          await saveIngreso(mesKey, data.proyectoId, suma);
+        }
+      }, 500);
+    }
   }
   closeModal('modal-trabajo');
 }
